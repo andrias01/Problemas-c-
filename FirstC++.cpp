@@ -4,6 +4,32 @@
 using namespace std;
 int main(int argc, char const *argv[])
 { 
+    /*
+    Algoritmo burbuja
+    int numeros[] = {4,1,2,3,5};
+    int i,j,aux;
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; i < 5; i++){
+            if (numeros[j] > numeros[j+1]){
+                aux = numeros[j];
+                numeros[j] = numeros[j+1];
+                numeros[j+1] = aux;
+            }
+        }
+    }
+    cout<<"Orden Ascendente: ";
+    for (int i = 0; i < 5; i++)
+    {
+        cout<<numeros[i]<<" ";
+    }
+    cout<<"\nOrden Descendente: ";
+    for (int i = 4; i > 0; i--)
+    {
+        cout<<numeros[i]<<" ";
+    }
+    
+    (para encontrar la longitud de una cadena   strlen(palabra)....)
+    ____________________________
     int n,Nmayor=0,elemento[100];
     cout<<"Digita el numero de elementos= \n";
     cin>>n;
@@ -17,8 +43,7 @@ int main(int argc, char const *argv[])
         }
     }
     cout<<"El mayor elemento del vector es: "<<Nmayor<<endl;
-    
-    /*
+    ______________________________________
     int numero,dato,contador=0;
     srand(time(NULL));
     dato = 1 + rand()%(100);
