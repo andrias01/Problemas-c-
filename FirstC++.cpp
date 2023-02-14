@@ -3,13 +3,65 @@
 #include <math.h>
 using namespace std;
 int main(int argc, char const *argv[])
-{ 
+{  
+    int numeros[] = {4,2,3,1,5};
+    int i,j,aux,min;
+    for ( i = 0; i < 5; i++)
+    {
+        min = i;
+        for (j=i+1; j < 5; j++)
+        {
+            if (numeros[j] < numeros[min])
+            {
+                min = j;
+            }
+        }
+        aux = numeros[i];
+        numeros[i] = numeros[min];
+        numeros[min] = aux;
+    }
+    cout<<"Orden Ascendente: ";
+    for (i = 0; i < 5; i++)
+    {
+        cout<<numeros[i]<<" ";
+    }
+    cout<<"\nOrden Descendente: ";
+    for (i = 4; i >= 0; i--)
+    {
+        cout<<numeros[i]<<" ";
+    } 
     /*
+    //Algoritmo del ordenamiento por insercion
+    int numeros[] = {4,2,3,1,5};
+    int i,pos,aux;
+    for (i = 0; i < 5; i++)
+    {
+        pos = i;
+        aux = numeros[i];
+
+        while ((pos>0) && (numeros[pos-1]>aux))
+        {
+            numeros[pos]=numeros[pos-1];
+            pos--;
+        }
+        numeros[pos] = aux;
+    }
+    cout<<"Orden Ascendente: ";
+    for (i = 0; i < 5; i++)
+    {
+        cout<<numeros[i]<<" ";
+    }
+    cout<<"\nOrden Descendente: ";
+    for (i = 4; i >= 0; i--)
+    {
+        cout<<numeros[i]<<" ";
+    } 
+    _______________________________________
     Algoritmo burbuja
     int numeros[] = {4,1,2,3,5};
     int i,j,aux;
     for (int i = 0; i < 5; i++){
-        for (int j = 0; i < 5; i++){
+        for (int j = 0; j < 5; i++){
             if (numeros[j] > numeros[j+1]){
                 aux = numeros[j];
                 numeros[j] = numeros[j+1];
