@@ -27,11 +27,6 @@ int main(int argc, char const *argv[])
     agregarPila(pila,Num1);
     cin>>Num2;
     agregarPila(pila,Num2);
-    
-
-    
-
-
     /*
     _____________________________________
     void sacarPila(nodo *&,int &);
