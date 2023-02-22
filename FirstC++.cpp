@@ -2,8 +2,77 @@
 #include <conio.h>
 #include <math.h>
 using namespace std;
+struct nodo{
+        int dato;
+        nodo *siguiente;
+    };
+    //prototipo de funcion
+    void agregarPila(nodo *&,int);
+    
+    nodo *pila = NULL;
+
+    void agregarPila(nodo *&pila,int n){
+        nodo *nuevo_nodo = new nodo();
+        nuevo_nodo->dato = n;
+        nuevo_nodo->siguiente = pila;
+        pila = nuevo_nodo;
+        cout<<"\nEl elemento fue agregado a la pila con EXITO"<<endl;
+    };
+    
 int main(int argc, char const *argv[])
-{  
+{ 
+    
+    int Num1,Num2;
+    cin>>Num1;
+    agregarPila(pila,Num1);
+    cin>>Num2;
+    agregarPila(pila,Num2);
+    
+
+    
+
+
+    /*
+    _____________________________________
+    void sacarPila(nodo *&,int &);
+    void sacarPila(nodo *&pila,int &n){
+        nodo *aux = pila;
+        n = aux->dato;
+        pila = aux->siguiente;
+        delete aux;
+    }
+    int dato;
+    cin>>dato;
+    agregarPila(pila,dato);
+    cin>>dato;
+    agregarPila(pila,dato);
+    cout<<"\nSancando elementos de pila: ";
+    while(pila != NULL){
+        sacarPila(pila,dato);
+        if (pila != NULL)
+        {
+            cout<<dato<<" , ";
+        }
+        else{
+            cout<<dato<<" . ";
+        }
+    }
+    ________________________________
+    //saber si un numero es par o impar
+    int num,*dir_num;
+    cout<<"Digite un numero: ";
+    cin>>num;
+    dir_num=&num; //Meto el valor y la posicion aqui
+    if (*dir_num%2 == 0)
+    {
+        cout<<"El numero "<<*dir_num<<" es par\n"; //Cuando esta el *trae numero
+        cout<<"La posicion en memoria es: "<<dir_num<<"\n";//Cuando no esta * trae direccion memoria
+    }else{
+        cout<<"El numero "<<*dir_num<<" es impar\n";
+        cout<<"La posicion en memoria es: "<<dir_num<<"\n";
+    }
+    ________________________________
+    //Ordenamiento por seleccion
     int numeros[] = {4,2,3,1,5};
     int i,j,aux,min;
     for ( i = 0; i < 5; i++)
@@ -30,7 +99,7 @@ int main(int argc, char const *argv[])
     {
         cout<<numeros[i]<<" ";
     } 
-    /*
+    ________________________________
     //Algoritmo del ordenamiento por insercion
     int numeros[] = {4,2,3,1,5};
     int i,pos,aux;
