@@ -2,11 +2,153 @@
 #include <conio.h>
 #include <math.h>
 using namespace std;
-struct nodo{
+struct Nodo{
         int dato;
-        nodo *siguiente;
+        Nodo *siguiente;
     };
-    //prototipo de funcion
+//prototipos
+void menu();
+void funcionSwitch(int);
+void agregarPila(Nodo *&, int);
+void mostrarPila(Nodo *&);
+void buscarElemento(Nodo *&, int);
+void eliminarPila(Nodo *&, int &);   
+
+Nodo *pila = NULL;int valor;string pregunta;
+Nodo *pilaAux = NULL;    
+    
+int main(int argc, char const *argv[])
+{ 
+    menu();
+    return 0;
+}
+void menu(){
+    cout<<"******************************************"<<endl;
+    cout<<"1. Insertar datos a la pila.\n2. Mostrar datos que contiene la pila.\n3. Buscar un elemento en la pila.\n4. Eliminar datos de la pila.\n5. Finalizar programa."<<endl;
+
+    int opcion;
+    cout<<"¿Qué opción seleccionas?: "<<endl;
+    cin>>opcion;
+    cout<<"******************************************"<<endl;
+    funcionSwitch(opcion);
+}
+
+void funcionSwitch(int opcion){
+    switch (opcion)
+    {
+    case 1:
+        do
+    {
+        cout<<"Ingrese el número: ";
+        cin >> valor;
+        agregarPila(pila,valor);
+
+        cout<<"¿Desea ingresar otro número? s/n: ";
+        cin>>pregunta;
+
+    } while (pregunta == "S" || pregunta == "s");
+        cout<<"Elementos agregados a pila"<<endl;
+        menu();
+        break;
+
+    case 2:
+        cout<<"Los datos de la pila son:"<<endl;
+        mostrarPila(pila);
+        menu();
+        break;
+        
+    case 3:
+        buscarElemento(pila,valor);
+        menu();
+        break;
+
+    case 4:
+        if (pregunta == "N" || pregunta == "n"){
+        while (pila != NULL){
+            eliminarPila(pila,valor);
+            if (pila != NULL)
+            {
+                cout<<valor<<endl;
+            }
+            else{
+                cout<<valor<<endl;
+            }
+        }
+        }
+        menu();
+        break;
+    
+    case 5:
+        cout<<"Programa finalizado...";
+        break;
+
+    default:
+        cout<<"Seleccione una opción correcta"<<endl<<endl;
+        menu();
+        break;
+    }
+}
+
+void agregarPila(Nodo *&pila,int n){
+    Nodo *nuevo_nodo = new Nodo(); //reservamos el espacio en memoria para nuevo_nodo
+    nuevo_nodo ->dato = n; // igualar la parte dato a n y ponerlo en el nuevo nodo
+    nuevo_nodo ->siguiente = pila; // poner el puntero e igualarlo a pila
+    pila = nuevo_nodo; // igualar pila al nuevo nodo
+
+}
+
+void mostrarPila(Nodo *&pila){
+    Nodo *aux = pila;
+    while (aux != NULL)
+    {
+        agregarPila(pilaAux,aux->dato);
+        aux = aux->siguiente;
+    }
+    Nodo *aux2 = pilaAux;
+    while (aux2 != NULL)
+    {
+        cout<<"Dato: "<<aux2->dato<<endl;
+        aux2 = aux2->siguiente;
+    }
+    
+}
+
+void buscarElemento(Nodo *&pila, int n){
+    Nodo *actual_nodo = new Nodo();
+    actual_nodo = pila;
+    int nodoBuscado = 0;
+    bool encontrado = false;
+    cout<<"Ingrese el nodo a buscar: ";
+    cin >> nodoBuscado;
+    if (pila != NULL){
+        while (actual_nodo != NULL && encontrado != true){
+            if (actual_nodo->dato == nodoBuscado)
+            {
+                cout<<"El nodo con dato "<<nodoBuscado<<" fue encontrado"<<endl<<endl;
+                encontrado = true;
+            }
+            actual_nodo = actual_nodo->siguiente;
+        }
+        if (encontrado == false)
+        {
+            cout<<"Nodo con dato "<<nodoBuscado<<" no fue encontrado"<<endl<<endl;
+        }   
+    }else{
+        cout<<"La pila se encuentra vacía."<<endl;
+    }
+
+}
+
+void eliminarPila(Nodo *&pila, int &n){
+    Nodo *aux = pila;
+    n = aux ->dato;
+    pila = aux ->siguiente;
+    delete aux;
+
+    cout << "Elemento eliminado de la pila: ";
+}
+/*
+//prototipo de funcion
     void agregarPila(nodo *&,int);
     void sacarPila(nodo *&,int &);
     void mostrarPila(nodo *&);
@@ -16,13 +158,7 @@ struct nodo{
     nodo *pila = NULL;
     //Proto de pila auxiliar
     nodo *PilaAux = NULL;
-
-    
-    
-int main(int argc, char const *argv[])
-{ 
-    
-    int dato;
+int dato;
     cout<<"\nIngrese primer dato: ";
     cin>>dato;
     agregarPila(pila,dato);
@@ -34,8 +170,84 @@ int main(int argc, char const *argv[])
     agregarPila(pila,dato);
     mostrarPila(pila);
     buscarEnPila();
+void agregarPila(nodo *&pila,int n){
+        nodo *nuevo_nodo = new nodo();
+        nuevo_nodo->dato = n;
+        nuevo_nodo->siguiente = pila;
+        pila = nuevo_nodo;
+        //cout<<"El elemento fue agregado a la pila con EXITO"<<endl;
+    };
+void sacarPila(nodo *&pila,int &n){
+        nodo *aux = pila;
+        n = aux->dato;
+        pila = aux->siguiente;
+        delete aux;
+    }
+void mostrarPila(nodo *&pila){
+        nodo *aux = pila;
+        cout<<"\nMostrando el contenido de la pila: "<<endl;
+        while (aux != NULL)
+        {
+            //cout<<"Dato: "<<aux->dato<<endl;
+            agregarPila(PilaAux,aux->dato);
+            aux = aux->siguiente; 
+        }
+        nodo *aux2 = PilaAux;
+        while (aux2 != NULL)
+        {
+            cout<<"Dato: "<<aux2->dato<<endl;
+            aux2 = aux2->siguiente;
+        }    
+       
+        nodo* actual = new nodo();
+	actual = primero;
+	if(primero!=NULL){
+		while(actual!=NULL){
+			cout << endl << " " << actual->dato; 
+			actual = actual->siguiente;
+		}
+	}else{
+		cout << endl << " La Pila se encuentra vacia" << endl << endl;
+	}
+          
+    }
+void buscarEnPila(){
+    nodo* aux = new nodo();
+	aux = pila;
+	int datoBuscar = 0;
+	bool encontrado = false;
+	cout << " Ingrese el dato a Buscar: ";
+	cin >> datoBuscar;
+	if(pila!=NULL){
+		while(aux!=NULL && encontrado != true){
+			if(aux->dato == datoBuscar){
+				cout << endl << " La Pila contiene el dato ( " << datoBuscar << " ) en su interior" << endl << endl;
+				encontrado = true;
+			}
+			aux = aux->siguiente;
+		}
+		if(encontrado==false){
+			cout << endl << " DATO no Encontrado" << endl << endl;
+		}
+	}else{
+		cout << endl << " La Pila se encuentra vacia" << endl << endl;
+	}
+}
+void SacarYMostrar(){
+        cout<<"\nSancando elementos de pila: ";
+        int dato;
+        while(pila != NULL){
+        sacarPila(pila,dato);
+        if (pila != NULL)
+        {
+            cout<<dato<<" , ";
+        }
+        else{
+            cout<<dato<<" . ";
+        }
+        }
+    }
     
-    /*
     ____________________________________________
     void mostrarPila(nodo *&pila){
         nodo *aux = NULL;
@@ -289,83 +501,5 @@ int main(int argc, char const *argv[])
    cout<<"La resta es: "<<resta<<endl;
    cout<<"La multiplicación es: "<<multiplicacion<<endl;
    cout<<"La divición es: "<<divicion<<endl;
-   */
-    return 0;
-}
-void agregarPila(nodo *&pila,int n){
-        nodo *nuevo_nodo = new nodo();
-        nuevo_nodo->dato = n;
-        nuevo_nodo->siguiente = pila;
-        pila = nuevo_nodo;
-        //cout<<"El elemento fue agregado a la pila con EXITO"<<endl;
-    };
-void sacarPila(nodo *&pila,int &n){
-        nodo *aux = pila;
-        n = aux->dato;
-        pila = aux->siguiente;
-        delete aux;
-    }
-void mostrarPila(nodo *&pila){
-        nodo *aux = pila;
-        cout<<"\nMostrando el contenido de la pila: "<<endl;
-        while (aux != NULL)
-        {
-            //cout<<"Dato: "<<aux->dato<<endl;
-            agregarPila(PilaAux,aux->dato);
-            aux = aux->siguiente; 
-        }
-        nodo *aux2 = PilaAux;
-        while (aux2 != NULL)
-        {
-            cout<<"Dato: "<<aux2->dato<<endl;
-            aux2 = aux2->siguiente;
-        }    
-        /*
-        nodo* actual = new nodo();
-	actual = primero;
-	if(primero!=NULL){
-		while(actual!=NULL){
-			cout << endl << " " << actual->dato; 
-			actual = actual->siguiente;
-		}
-	}else{
-		cout << endl << " La Pila se encuentra vacia" << endl << endl;
-	}
-        */    
-    }
-void buscarEnPila(){
-    nodo* actual = new nodo();
-	actual = pila;
-	int datoBuscar = 0;
-	bool encontrado = false;
-	cout << " Ingrese el dato a Buscar: ";
-	cin >> datoBuscar;
-	if(pila!=NULL){
-		while(actual!=NULL && encontrado != true){
-			if(actual->dato == datoBuscar){
-				cout << endl << " La Pila contiene el dato ( " << datoBuscar << " ) en su interior" << endl << endl;
-				encontrado = true;
-			}
-			actual = actual->siguiente;
-		}
-		if(encontrado==false){
-			cout << endl << " DATO no Encontrado" << endl << endl;
-		}
-	}else{
-		cout << endl << " La Pila se encuentra vacia" << endl << endl;
-	}
-}
-void SacarYMostrar(){
-        cout<<"\nSancando elementos de pila: ";
-        int dato;
-        while(pila != NULL){
-        sacarPila(pila,dato);
-        if (pila != NULL)
-        {
-            cout<<dato<<" , ";
-        }
-        else{
-            cout<<dato<<" . ";
-        }
-        }
-    }
+
+*/
