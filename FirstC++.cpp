@@ -1,6 +1,103 @@
 #include <iostream>
 #include <conio.h>
-#include <math.h>
+using namespace std;
+struct Nodo{
+    int dato;
+    Nodo *siguiente;
+};
+//prototipos
+void insertarCola(Nodo *&,Nodo *&,int);
+bool colaVacia(Nodo *&);
+void mostrarCola(Nodo *&);
+void buscarCola(Nodo *&, int);
+
+//Variables globales
+Nodo *frente = NULL;
+int dato;
+Nodo *final = NULL;
+
+int main(int argc, char const *argv[])
+{ 
+    //insercion de datos basico..
+    cout<<"Ingrese un DATO: ";
+    cin>>dato;
+    insertarCola(frente,final,dato);
+    cout<<"Ingrese un DATO: ";
+    cin>>dato;
+    insertarCola(frente,final,dato);
+    cout<<"Ingrese un DATO: ";
+    cin>>dato;
+    insertarCola(frente,final,dato);
+
+    mostrarCola(frente);//Esta funcion muestra los datos de la cola (se puede repeti las veces que quieras)
+    //Lo bueno de esta funcion esque no elimina los datos para mostrarlos.
+    //se crea un aux para recorrerla por completo igual que las pilas.
+    cout<<"Que dato quieres buscar de la cola?: ";
+    cin>>dato;
+    buscarCola(frente,dato);
+
+    getch();//Para que se suspenda la pantalla gracias a <conio.h>
+    return 0;
+}
+
+void insertarCola(Nodo *&frente,Nodo *&final,int n){
+    Nodo *nuevo_nodo = new Nodo(); //reservamos el espacio en memoria para nuevo_nodo
+    nuevo_nodo ->dato = n; // igualar la parte dato a n y ponerlo en el nuevo nodo
+    nuevo_nodo ->siguiente = NULL; // poner el puntero e igualarlo a NULL
+    if (colaVacia(frente)){
+        frente = nuevo_nodo;//Proceso si esta vacia
+    }else{
+        final -> siguiente = nuevo_nodo;//Proceso si hay mas de un dato
+    }
+    final = nuevo_nodo;//y siempre se va a pasar al final el nodo (final) para seguir con la insercion.
+    cout<<"Se ingreso el dato correctamente"<<endl;
+}
+bool colaVacia(Nodo *&frente){
+    return (frente == NULL)? true : false ;//Esta funcion devuelve true o false
+    //para identificar si la pila esta vacia y poder hacer un proceso si no y un proceso si si.
+}
+void mostrarCola(Nodo *&frente){
+    cout<<"Mostrando los datos de la cola..."<<endl;
+    Nodo *aux = frente;
+    while (aux != NULL)
+    {
+        cout<<"Dato: "<<aux->dato<<endl;
+        aux = aux->siguiente;
+    }
+}
+void buscarCola(Nodo *&frente,int datoBuscar){
+    Nodo *aux = frente;
+    bool encontrado;// Variable para indicar si se encontró el dato buscado
+    while (aux != NULL)
+    {
+        if (aux->dato==datoBuscar){
+            encontrado = true;
+            break; // Salir del ciclo cuando se encuentra el dato buscado  
+        }
+        aux = aux->siguiente;//si no es igual que pase al siguiente nodo a revisar
+    }
+    if (encontrado){
+        cout<<"El dato "<<datoBuscar<<" se encuetra en la cola"<<endl;
+    }else{
+        cout<<"El dato "<<datoBuscar<<" NO se encuetra en la cola"<<endl;
+    }
+}
+
+
+/*
+//void eliminarCola(Nodo *&,Nodo *&,int &);
+void eliminarCola(Nodo *&frente,Nodo *&final,int &n){
+    n = frente->dato;
+    Nodo *aux = frente;
+    if (frente==final){
+        frente == NULL;
+        final == NULL;
+    }else{
+        frente = frente ->siguiente;
+    }
+    delete aux;
+}
+_______________________________
 using namespace std;
 struct Nodo{
         int dato;
@@ -147,7 +244,7 @@ void eliminarPila(Nodo *&pila, int &n){
 
     cout << "Elemento eliminado de la pila: ";
 }
-/*
+______________________________________________________
 //prototipo de funcion
     void agregarPila(nodo *&,int);
     void sacarPila(nodo *&,int &);
