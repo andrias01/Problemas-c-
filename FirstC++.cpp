@@ -1,6 +1,135 @@
 #include <iostream>
 #include <conio.h>
 using namespace std;
+
+struct  Nodo{
+    int dato;
+    Nodo *siguiente;
+};
+
+void insertarcola(Nodo *&, Nodo *&,int); 
+bool nodoVacio(Nodo *);
+void menuCola();
+void mostrarCola(Nodo *&);
+void buscarCola(Nodo *&, int);
+
+
+
+Nodo*frente=NULL;
+Nodo*final=NULL;
+
+int main(){
+    int  eleccion;
+    bool variableCiclo= false;
+    // menuCola();
+    // cout<<"ELIJA EL VALOR EN EL SIGUIENTE MENU: \n ";
+    // cin>> eleccion;
+
+    while (variableCiclo!=true){
+        menuCola();
+        cout<<"ELIJA EL VALOR EN EL SIGUIENTE MENU: \n ";
+        cin>> eleccion;
+        switch (eleccion)
+        {
+        case 1:
+        int valorDato;
+        cout<<"ingrese el valor a agregar en la cola\n";
+        cin>>valorDato;
+        insertarcola(frente,final,valorDato);
+            break;
+        case 2:
+        mostrarCola(frente);
+            break;
+        case 3:
+        int dato;
+        cout<<"Que dato quieres buscar de la cola?: ";
+        cin>>dato;
+        buscarCola(frente,dato);
+            break;
+        case 4:
+        variableCiclo=true;
+            break;
+        default:
+        cout<<"numero invalido, seleccione numero de la lista :\n";
+        cout<<"\n";
+        cout<<"\n";
+            break;
+        }
+    }
+
+    getch();
+    return 0;
+
+}
+
+void insertarcola(Nodo *&frente, Nodo *&final, int valorDato){
+    Nodo *nuevo_nodo= new Nodo();
+    nuevo_nodo->dato=valorDato;
+    nuevo_nodo->siguiente=NULL;
+
+    if (nodoVacio(frente)){
+        frente=nuevo_nodo;
+
+    }
+    else{
+        final->siguiente=nuevo_nodo;
+    }
+    final=nuevo_nodo;
+    cout<<"dato ingresado correctamente\n";
+   
+}
+bool nodoVacio(Nodo *frente){
+    return (frente==NULL)? true:false;
+}
+
+
+void menuCola(){
+
+cout <<"_BIENVENIDO AL MENU DE LA COLA_ \n";
+cout<<"1- Agregar elemento a la cola: \n";
+cout<<"2- Mostrar cola : \n";
+cout<<"3- Buscar elemento en la cola: \n" ;
+cout<<"4- Salir del programa  \n";
+cout<<"\n";
+cout<<"\n";
+};
+
+void mostrarCola(Nodo *&frente){
+    cout<<"Mostrando los datos de la cola..."<<endl;
+    Nodo *aux = frente;
+    while (aux != NULL)
+    {
+        cout<<"Dato: "<<aux->dato<<endl;
+        aux = aux->siguiente;
+        cout<<"\n";
+        cout<<"\n";
+    }
+};
+
+void buscarCola(Nodo *&frente,int datoBuscar){
+    Nodo *aux = frente;
+    bool encontrado;// Variable para indicar si se encontró el dato buscado
+    while (aux != NULL)
+    {
+        if (aux->dato==datoBuscar){
+            encontrado = true;
+            break; // Salir del ciclo cuando se encuentra el dato buscado  
+        }
+        aux = aux->siguiente;//si no es igual que pase al siguiente nodo a revisar
+    }
+    if (encontrado){
+        cout<<"El dato "<<datoBuscar<<" se encuetra en la cola"<<endl;
+        cout<<"\n";  
+        cout<<"\n";
+    }else{
+        cout<<"El dato "<<datoBuscar<<" NO se encuetra en la cola"<<endl; 
+        cout<<"\n"; 
+        cout<<"\n";
+        }
+};
+
+
+/*
 struct Nodo{
     int dato;
     Nodo *siguiente;
@@ -56,7 +185,7 @@ bool colaVacia(Nodo *&frente){
     return (frente == NULL)? true : false ;//Esta funcion devuelve true o false
     //para identificar si la pila esta vacia y poder hacer un proceso si no y un proceso si si.
 }
-void mostrarCola(Nodo *&frente){
+void mostrarCola(Nodo *&frente){  //    |5|->|6|->null
     cout<<"Mostrando los datos de la cola..."<<endl;
     Nodo *aux = frente;
     while (aux != NULL)
@@ -76,15 +205,13 @@ void buscarCola(Nodo *&frente,int datoBuscar){
         }
         aux = aux->siguiente;//si no es igual que pase al siguiente nodo a revisar
     }
-    if (encontrado){
+    if (encontrado){ //true
         cout<<"El dato "<<datoBuscar<<" se encuetra en la cola"<<endl;
-    }else{
+    }else{ //false
         cout<<"El dato "<<datoBuscar<<" NO se encuetra en la cola"<<endl;
     }
 }
-
-
-/*
+_________________________________________
 //void eliminarCola(Nodo *&,Nodo *&,int &);
 void eliminarCola(Nodo *&frente,Nodo *&final,int &n){
     n = frente->dato;
