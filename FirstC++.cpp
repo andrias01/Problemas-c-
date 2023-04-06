@@ -1,135 +1,169 @@
 #include <iostream>
 #include <conio.h>
 using namespace std;
-
-struct  Nodo{
-    int dato;
-    Nodo *siguiente;
-};
-
-void insertarcola(Nodo *&, Nodo *&,int); 
-bool nodoVacio(Nodo *);
-void menuCola();
-void mostrarCola(Nodo *&);
-void buscarCola(Nodo *&, int);
-
-
-
-Nodo*frente=NULL;
-Nodo*final=NULL;
-
-int main(){
-    int  eleccion;
-    bool variableCiclo= false;
-    // menuCola();
-    // cout<<"ELIJA EL VALOR EN EL SIGUIENTE MENU: \n ";
-    // cin>> eleccion;
-
-    while (variableCiclo!=true){
-        menuCola();
-        cout<<"ELIJA EL VALOR EN EL SIGUIENTE MENU: \n ";
-        cin>> eleccion;
-        switch (eleccion)
-        {
-        case 1:
-        int valorDato;
-        cout<<"ingrese el valor a agregar en la cola\n";
-        cin>>valorDato;
-        insertarcola(frente,final,valorDato);
-            break;
-        case 2:
-        mostrarCola(frente);
-            break;
-        case 3:
+struct Nodo{
         int dato;
-        cout<<"Que dato quieres buscar de la cola?: ";
-        cin>>dato;
-        buscarCola(frente,dato);
-            break;
-        case 4:
-        variableCiclo=true;
-            break;
-        default:
-        cout<<"numero invalido, seleccione numero de la lista :\n";
-        cout<<"\n";
-        cout<<"\n";
-            break;
-        }
-    }
+        Nodo *siguiente;
+    };
+void insertarLista(Nodo *&, int);
+void mostrarLista(Nodo *);
+void buscarLista(Nodo *,int);
 
-    getch();
+Nodo *lista = NULL;
+int dato,datobuscar;
+
+int main(int argc, char const *argv[])
+{ 
+    //insercion de datos basico..
+
+    insertarLista(lista,9);
+    insertarLista(lista,5);
+    insertarLista(lista,1);
+    insertarLista(lista,6);
+    insertarLista(lista,2);
+    insertarLista(lista,8);
+    insertarLista(lista,4);
+    //mostrarLista(lista);
+    
+    buscarLista(lista,6);
     return 0;
+} 
 
-}
+void insertarLista(Nodo *&lista,int n){
+    Nodo *nuevo_nodo = new Nodo();
+    nuevo_nodo->dato = n;
 
-void insertarcola(Nodo *&frente, Nodo *&final, int valorDato){
-    Nodo *nuevo_nodo= new Nodo();
-    nuevo_nodo->dato=valorDato;
-    nuevo_nodo->siguiente=NULL;
+    Nodo *aux1 = lista;
+    Nodo *aux2;
 
-    if (nodoVacio(frente)){
-        frente=nuevo_nodo;
-
+    while ((aux1 != NULL) && (aux1->dato < n)){
+        aux2 = aux1;
+        aux1 = aux1->siguiente;
     }
-    else{
-        final->siguiente=nuevo_nodo;
+    if (lista == aux1)
+    {
+        lista = nuevo_nodo;
+    }else{
+        aux2->siguiente = nuevo_nodo;
     }
-    final=nuevo_nodo;
-    cout<<"dato ingresado correctamente\n";
-   
+    nuevo_nodo->siguiente = aux1;
 }
-bool nodoVacio(Nodo *frente){
-    return (frente==NULL)? true:false;
-}
-
-
-void menuCola(){
-
-cout <<"_BIENVENIDO AL MENU DE LA COLA_ \n";
-cout<<"1- Agregar elemento a la cola: \n";
-cout<<"2- Mostrar cola : \n";
-cout<<"3- Buscar elemento en la cola: \n" ;
-cout<<"4- Salir del programa  \n";
-cout<<"\n";
-cout<<"\n";
-};
-
-void mostrarCola(Nodo *&frente){
-    cout<<"Mostrando los datos de la cola..."<<endl;
-    Nodo *aux = frente;
+void mostrarLista(Nodo *lista){
+    Nodo *aux = lista;
     while (aux != NULL)
     {
         cout<<"Dato: "<<aux->dato<<endl;
         aux = aux->siguiente;
-        cout<<"\n";
-        cout<<"\n";
+    } 
+}
+void buscarLista(Nodo *lista, int n){
+    bool band = false;
+    //Nodo *actual = new Nodo();
+    Nodo *actual = lista;
+    while((actual != NULL) && (actual->dato <= n)){
+        if(actual->dato == n){
+            band = true;
+        }
+        actual = actual->siguiente;
     }
-};
+    if (band == true)
+    {
+        cout<<"Elemento "<<n<<" SI se encuentra en la lista\n";
+    }
+    else{
+        cout<<"Elemento "<<n<<" NO se encuentra en la lista\n";
+    }
+}
+/*
+using namespace std;
+struct Nodo{
+        int dato;
+        Nodo *siguiente;
+    };
+//prototipos
+void menu();
+void funcionSwitch(int);
+void agregarPila(Nodo *&, int);
+void mostrarPila(Nodo *&);   
 
-void buscarCola(Nodo *&frente,int datoBuscar){
-    Nodo *aux = frente;
-    bool encontrado;// Variable para indicar si se encontró el dato buscado
+Nodo *pila = NULL;int valor;string pregunta;
+Nodo *pilaAux = NULL;    
+    
+int main(int argc, char const *argv[])
+{ 
+    menu();
+    return 0;
+}
+void menu(){
+    cout<<"******************************************"<<endl;
+    cout<<"1. Insertar datos a la pila.\n2. Mostrar datos que contiene la pila.\n3. Finalizar programa."<<endl;
+
+    int opcion;
+    cout<<"¿Qué opción seleccionas?: "<<endl;
+    cin>>opcion;
+    cout<<"******************************************"<<endl;
+    funcionSwitch(opcion);
+}
+
+void funcionSwitch(int opcion){
+    switch (opcion)
+    {
+    case 1:
+        do
+    {
+        cout<<"Ingrese el número: ";
+        cin >> valor;
+        agregarPila(pila,valor);
+
+        cout<<"¿Desea ingresar otro número? s/n: ";
+        cin>>pregunta;
+
+    } while (pregunta == "S" || pregunta == "s");
+        cout<<"Elementos agregados a pila"<<endl;
+        menu();
+        break;
+
+    case 2:
+        cout<<"Los datos de la pila son:"<<endl;
+        mostrarPila(pila);
+        menu();
+        break;
+
+    case 3:
+        cout<<"Programa finalizado...";
+        break;
+
+    default:
+        cout<<"Seleccione una opción correcta"<<endl<<endl;
+        menu();
+        break;
+    }
+}
+
+void agregarPila(Nodo *&pila,int n){
+    Nodo *nuevo_nodo = new Nodo(); //reservamos el espacio en memoria para nuevo_nodo
+    nuevo_nodo ->dato = n; // igualar la parte dato a n y ponerlo en el nuevo nodo
+    nuevo_nodo ->siguiente = pila; // poner el puntero e igualarlo a pila
+    pila = nuevo_nodo; // igualar pila al nuevo nodo
+
+}
+
+void mostrarPila(Nodo *&pila){
+    Nodo *aux = pila;
     while (aux != NULL)
     {
-        if (aux->dato==datoBuscar){
-            encontrado = true;
-            break; // Salir del ciclo cuando se encuentra el dato buscado  
-        }
-        aux = aux->siguiente;//si no es igual que pase al siguiente nodo a revisar
+        agregarPila(pilaAux,aux->dato);
+        aux = aux->siguiente;
     }
-    if (encontrado){
-        cout<<"El dato "<<datoBuscar<<" se encuetra en la cola"<<endl;
-        cout<<"\n";  
-        cout<<"\n";
-    }else{
-        cout<<"El dato "<<datoBuscar<<" NO se encuetra en la cola"<<endl; 
-        cout<<"\n"; 
-        cout<<"\n";
-        }
-};
-
-
-/*
+    Nodo *aux2 = pilaAux;
+    while (aux2 != NULL)
+    {
+        cout<<"Dato: "<<aux2->dato<<endl;
+        aux2 = aux2->siguiente;
+    }
+    
+}
+__________________________________________________________
 struct Nodo{
     int dato;
     Nodo *siguiente;
