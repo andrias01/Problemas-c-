@@ -1,9 +1,149 @@
+# include<iostream>
+# include<conio.h>
+# include<stdlib.h>
+using namespace std;
+struct Contenedor{
+	int codigo;
+	string empresa;
+	Contenedor*siguiente;
+};
+bool buscarpila(Contenedor*&pila,int n){
+	Contenedor*aux1=pila;
+	while(aux1!=NULL){
+		if(aux1->codigo==n){
+			cout<<"El contenedor se enecuentra en la pila"<<endl;
+			return true;
+		}
+		aux1=aux1->siguiente;
+	}
+	cout<<"El contenedor NO se encuentra en la pila"<<endl;
+	return false;
+}
+void agregarpila(Contenedor*&pila , int n,string nombre_de_empresa){
+	if (buscarpila(pila,n)==false){
+        Contenedor*nuevo_contenedor=new Contenedor();
+        nuevo_contenedor-> codigo=n;
+        nuevo_contenedor-> empresa=nombre_de_empresa;
+        nuevo_contenedor-> siguiente=pila;
+        pila=nuevo_contenedor;
+        cout<<"El contenedor "<<n<<" se ha agregado correctamente"<<endl;
+	}else{
+        cout<<"No puedes agregar este contenedor porque ya existe uno igual"<<endl;
+    }
+    
+}
+void mostrar_pila(Contenedor*&pila){
+	Contenedor*aux1=pila;
+    if(aux1==NULL){
+		cout<<"ingrese elementos a la pilaOriginal porque esta [VACIA]"<<endl;
+	}
+	while(aux1!=NULL){
+		cout<<"<<<<<<<<<["<<aux1->codigo<<":"<<aux1->empresa<<"]    ";
+		aux1=aux1->siguiente;
+	}
+    cout<<endl;
+}
+
+void mostrar_pila_aux(Contenedor*&pila_aux){
+	Contenedor*aux1=pila_aux;
+    if(aux1==NULL){
+		cout<<"ingrese elementos a la pilaAuxiliar porque esta [VACIA]"<<endl;
+	}
+	while(aux1!=NULL){
+		cout<<"<<<<<<<<<["<<aux1->codigo<<":"<<aux1->empresa<<"]    ";
+		aux1=aux1->siguiente;
+	}
+    cout<<endl;
+}
+void eliminar_contenedor(Contenedor*&pila,Contenedor*&pila_aux,int n){
+	if(buscarpila(pila,n)){
+		Contenedor*actual=pila;
+		Contenedor*anterior=NULL;
+		while(actual!=NULL){
+			if (actual->codigo==n){
+				pila=actual->siguiente;
+				break;
+			}
+			anterior=actual;
+			actual=actual->siguiente;
+			anterior->siguiente=pila_aux;
+			pila_aux=anterior;
+		}
+        cout<<"El contenedor fue eliminado"<<endl;
+	}
+    
+}
+
+void mostrarMenu() {
+    cout << "Menu:" << endl;
+    cout << "1. Agregar contenedor" << endl;
+    cout << "2. Buscar contenedor" << endl;
+    cout << "3. Eliminar contenedor" << endl;
+    cout << "4. Salir" << endl;
+}
+
+int main() {
+	Contenedor*pila=NULL;
+	Contenedor*pila_aux;
+	int n;
+	string nombre_de_empresa;
+    int opcion;
+    do {
+        mostrarMenu();
+        cout<<"Mostrando almacenamiento actual"<<endl;
+        mostrar_pila(pila);
+        mostrar_pila_aux(pila_aux);
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+            	cout<<"ingrese el codigo del contenedor"<<endl;
+            	cin>>n;
+            	cout<<"ingrese el nombre de la empresa"<<endl;
+            	cin>>nombre_de_empresa;
+            	agregarpila(pila,n,nombre_de_empresa);
+            	break;
+            case 2:
+            	cout<<"ingrese el codigo del contenedor"<<endl;
+            	cin>>n;
+            	buscarpila(pila,n);
+            	break;
+            case 3:
+            	cout<<"ingrese el codigo del contenedor"<<endl;
+            	cin>>n;
+                if (buscarpila(pila,n))
+                {
+                    eliminar_contenedor(pila,pila_aux,n);
+                }
+                if (buscarpila(pila_aux,n))
+                {
+                    eliminar_contenedor(pila_aux,pila,n);
+                }
+            	break;
+			case 4:
+				cout << "Saliendo..." << endl;
+                break;   
+            default:
+                cout << "Opcion invalida" << endl;
+        }
+
+    } while (opcion != 4);
+
+    return 0;
+}
+
+/*
 #include <iostream>
 using namespace std;
 
 struct Contenedor {
     int numero;
     Contenedor* siguiente;
+};
+
+struct Almacen {
+    Contenedor* pila;
+    Almacen* siguiente;
 };
 
 void agregarContenedor(Contenedor*& pila, int num) {
@@ -22,20 +162,49 @@ void retirarContenedor(Contenedor*& pila) {
         delete temp;
     }
 }
-
 void mostrarPila(Contenedor* pila) {
     if (pila == NULL) {
         cout << "[PILA VACIA]" << endl;
     } else {
         cout << "[";
-        while (pila != NULL) {
-            cout << pila->numero;
-            if (pila->siguiente != NULL) {
+        Contenedor* contenedor = pila;
+        while (contenedor != NULL) {
+            cout << contenedor->numero;
+            if (contenedor->siguiente != NULL) {
                 cout << ", ";
             }
-            pila = pila->siguiente;
-        }
+            contenedor = contenedor->siguiente;
+        } 
         cout << "]" << endl;
+    }
+}
+
+void agregarAlmacen(Almacen*& top, Contenedor* pila) {
+    Almacen* nuevo = new Almacen();
+    nuevo->pila = pila;
+    nuevo->siguiente = top;
+    top = nuevo;
+}
+
+void retirarAlmacen(Almacen*& top) {
+    if (top == NULL) {
+        cout << "No hay almacenes para retirar." << endl;
+    } else {
+        Almacen* temp = top;
+        top = top->siguiente;
+        delete temp;
+    }
+}
+
+void mostrarAlmacen(Almacen* top) {
+    if (top == NULL) {
+        cout << "[ALMACEN VACIO]" << endl;
+    } else {
+        while (top != NULL) {
+            cout << "Pila de contenedores: ";
+            mostrarPila(top->pila);
+            top = top->siguiente;
+        }
     }
 }
 
@@ -45,24 +214,21 @@ int main() {
     cin >> n;
     cout << "Ingrese el numero maximo de pilas de contenedores: ";
     cin >> m;
-    Contenedor* almacen[m];
-    for (int i = 0; i < m; i++) {
-        almacen[i] = NULL;
-    }
+    Almacen* top = NULL;
+    Contenedor* pila = NULL;
     int opcion, num;
     do {
         // Mostrar estado actual del almacenamiento
         cout << "Estado actual del almacenamiento:" << endl;
-        for (int i = 0; i < m; i++) {
-            cout << "Pila " << i+1 << ": ";
-            mostrarPila(almacen[i]);
-        }
+        mostrarAlmacen(top);
         // Mostrar opciones del menu
         cout << endl;
         cout << "Seleccione una opcion:" << endl;
         cout << "1. Agregar contenedor" << endl;
         cout << "2. Retirar contenedor" << endl;
-        cout << "3. Salir" << endl;
+        cout << "3. Agregar pila de contenedores" << endl;
+        cout << "4. Retirar pila de contenedores" << endl;
+        cout << "5. Salir" << endl;
         cout << "Opcion: ";
         cin >> opcion;
         switch (opcion) {
@@ -71,53 +237,76 @@ int main() {
                 cin >> num;
                 // Buscar la primera pila con espacio para el nuevo contenedor
                 bool pilaEncontrada = false;
-                for (int i = 0; i < m && !pilaEncontrada; i++) {
-                    if (almacen[i] == NULL || i == m-1 || almacen[i]->numero < n) {
-                        agregarContenedor(almacen[i], num);
+                Almacen* aux = top;
+                while (aux != NULL && !pilaEncontrada) {
+                    if (aux->pila == NULL || aux->pila->numero < n) {
+                        agregarContenedor(aux->pila, num);
                         pilaEncontrada = true;
+                    } else {
+                        aux = aux->siguiente;
                     }
                 }
+                // Si no se encontró una pila con espacio, crear una nueva
                 if (!pilaEncontrada) {
-                    cout << "No hay espacio para almacenar el contenedor." << endl;
+                    if (m == 0) {
+                        cout << "No se pueden agregar mas pilas de contenedores." << endl;
+                    } else {
+                        Contenedor* nuevaPila = NULL;
+                        agregarContenedor(nuevaPila, num);
+                        agregarAlmacen(top, nuevaPila);
+                        m--;
+                    }
                 }
                 break;
             }
             case 2: {
-                // Buscar la ultima pila
-                bool contenedorRetirado = false;
-                for (int i = m-1; i >= 0 && !contenedorRetirado; i--) {
-                    if (almacen[i] != NULL) {
-                        retirarContenedor(almacen[i]);
-                        contenedorRetirado = true;
-                    }
-                }
-                if (!contenedorRetirado) {
+                // Retirar el contenedor de la ultima pila
+                if (top == NULL) {
                     cout << "No hay contenedores para retirar." << endl;
+                } else {
+                    retirarContenedor(top->pila);
+                    if (top->pila == NULL) {
+                        retirarAlmacen(top);
+                        m++;
+                    }
                 }
                 break;
             }
-            case 3:
-                cout << "Saliendo del programa..."<< endl;
+            case 3: {
+                if (m == 0) {
+                    cout << "No se pueden agregar mas pilas de contenedores." << endl;
+                } else {
+                    Contenedor* nuevaPila = NULL;
+                    agregarAlmacen(top, nuevaPila);
+                    m--;
+                }
                 break;
-            default:
-                cout << "Opcion invalida. Intente de nuevo." << endl;
-            break;
-}
-
-    } while (opcion != 3);
-    // Liberar memoria
-    for (int i = 0; i < m; i++) {
-        while (almacen[i] != NULL) {
-            Contenedor* temp = almacen[i];
-            almacen[i] = almacen[i]->siguiente;
-            delete temp;
+            }
+            case 4: {
+                retirarAlmacen(top);
+                m++;
+                break;
+            }
+            case 5: {
+                cout << "Saliendo del programa." << endl;
+                break;
+            }
+            default: {
+                cout << "Opcion no valida." << endl;
+                break;
+            }
         }
+    } while (opcion != 5);
+    // Liberar memoria
+    while (top != NULL) {
+        while (top->pila != NULL) {
+            retirarContenedor(top->pila);
+        }
+        retirarAlmacen(top);
     }
     return 0;
 }
-
-
-/*
+______________________________________________
 #include <iostream>
 
 using namespace std;
