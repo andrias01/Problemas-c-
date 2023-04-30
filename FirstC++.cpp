@@ -2,6 +2,129 @@
 # include<conio.h>
 # include<stdlib.h>
 using namespace std;
+struct Nodo{
+        int dato;
+        Nodo *siguiente;
+    };
+void insertarLista(Nodo *&, int);
+void mostrarLista(Nodo *);
+void buscarLista(Nodo *,int);
+void mostrarMenu();
+
+Nodo *lista = NULL;
+int dato,datobuscar,opcion;
+
+int main(int argc, char const *argv[])
+{ 
+    do {
+        mostrarMenu();
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+            	cout<<"ingrese el dato para la lista"<<endl;
+            	cin>>dato;
+            	insertarLista(lista,dato);
+            	break;
+            case 2:
+            	cout<<"Mostrando Lista"<<endl;
+            	mostrarLista(lista);
+            	break;
+			case 3:
+				cout << "Saliendo..." << endl;
+                break;   
+            default:
+                cout << "Opcion invalida" << endl;
+        }
+
+    } while (opcion != 3);
+    /*
+    //insercion de datos basico..
+    insertarLista(lista,9);
+    insertarLista(lista,5);
+    insertarLista(lista,1);
+    insertarLista(lista,6);
+    insertarLista(lista,2);
+    insertarLista(lista,8);
+    insertarLista(lista,4);
+    //mostrarLista(lista);
+    buscarLista(lista,6);
+    mostrarLista(lista);*/
+    return 0;
+} 
+/*
+void insertarLista(Nodo *&lista,int n){
+    Nodo *nuevo_nodo = new Nodo();
+    nuevo_nodo->dato = n;
+
+    Nodo *aux1 = lista;
+    Nodo *aux2;
+
+    while ((aux1 != NULL) && (aux1->dato < n)){
+        aux2 = aux1;
+        aux1 = aux1->siguiente;
+    }
+    if (lista == aux1)
+    {
+        lista = nuevo_nodo;
+    }else{
+        aux2->siguiente = nuevo_nodo;
+    }
+    nuevo_nodo->siguiente = aux1;
+}*/
+void insertarLista(Nodo *&lista, int n) {
+    Nodo *nuevo_nodo = new Nodo();
+    nuevo_nodo->dato = n;
+    nuevo_nodo->siguiente = NULL; // Establecer el siguiente nodo como NULL, ya que se agregará al final
+
+    if (lista == NULL) {
+        lista = nuevo_nodo; // Si la lista está vacía, el nuevo nodo se convierte en el primer nodo
+    } else {
+        Nodo *aux = lista;
+        while (aux->siguiente != NULL) {
+            aux = aux->siguiente; // Recorrer hasta el último nodo
+        }
+        aux->siguiente = nuevo_nodo; // Enlazar el nuevo nodo al último nodo existente
+    }
+}
+void mostrarLista(Nodo *lista){
+    Nodo *aux = lista;
+    while (aux != NULL)
+    {
+        cout<<"Dato: "<<aux->dato<<endl;
+        aux = aux->siguiente;
+    } 
+}
+void buscarLista(Nodo *lista, int n){
+    bool band = false;
+    //Nodo *actual = new Nodo();
+    Nodo *actual = lista;
+    while((actual != NULL) && (actual->dato <= n)){
+        if(actual->dato == n){
+            band = true;
+        }
+        actual = actual->siguiente;
+    }
+    if (band == true)
+    {
+        cout<<"Elemento "<<n<<" SI se encuentra en la lista\n";
+    }
+    else{
+        cout<<"Elemento "<<n<<" NO se encuentra en la lista\n";
+    }
+}
+void mostrarMenu() {
+    cout << "Menu:" << endl;
+    cout << "1. Agregar a lista" << endl;
+    cout << "2. Mostrar lista" << endl;
+    cout << "3. Salir" << endl;
+}
+
+/*
+# include<iostream>
+# include<conio.h>
+# include<stdlib.h>
+using namespace std;
 struct Contenedor{
 	int codigo;
 	string empresa;
@@ -131,8 +254,7 @@ int main() {
 
     return 0;
 }
-
-/*
+________________________________________________________________
 #include <iostream>
 using namespace std;
 
