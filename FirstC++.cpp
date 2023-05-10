@@ -72,6 +72,125 @@ void insertarLista(Nodo *&lista,int n){
     }
     nuevo_nodo->siguiente = aux1;
 }*/
+/*
+// Función para insertar un elemento al inicio de la lista "lista DoblementeEnlasada"
+void insertarAlInicio(Node** head, int newData) {
+    // Crear un nuevo nodo
+    Node* newNode = new Node();
+    
+    // Asignar los datos al nuevo nodo
+    newNode->data = newData;
+    
+    // Establecer el enlace next del nuevo nodo al antiguo head
+    newNode->next = (*head);
+    
+    // Establecer el enlace prev del nuevo nodo como nullptr
+    newNode->prev = nullptr;
+    
+    // Cambiar el enlace prev del antiguo head al nuevo nodo
+    if ((*head) != nullptr) {
+        (*head)->prev = newNode;
+    }
+    
+    // Establecer el nuevo nodo como el head
+    (*head) = newNode;
+}*/
+/*
+// Función para insertar un elemento al final de la lista circular
+void insertar(Nodo** cabeza, int nuevoDato) {
+    // Crear un nuevo nodo
+    Nodo* nuevoNodo = new Nodo();
+    nuevoNodo->dato = nuevoDato;
+    
+    // Verificar si la lista está vacía
+    if (*cabeza == nullptr) {
+        nuevoNodo->siguiente = nuevoNodo;  // El nuevo nodo apunta a sí mismo
+        *cabeza = nuevoNodo;  // El nuevo nodo se convierte en el cabeza
+    } else {
+        Nodo* temp = *cabeza;
+        
+        // Avanzar hasta el último nodo de la lista
+        while (temp->siguiente != *cabeza) {
+            temp = temp->siguiente;
+        }
+        
+        // Insertar el nuevo nodo al final de la lista
+        temp->siguiente = nuevoNodo;
+        nuevoNodo->siguiente = *cabeza;  // El nuevo nodo apunta al cabeza
+    }
+}
+
+// Función para imprimir la lista circular
+void imprimirLista(Nodo* cabeza) {
+    if (cabeza != nullptr) {
+        Nodo* temp = cabeza;
+        do {
+            std::cout << temp->dato << " ";
+            temp = temp->siguiente;
+        } while (temp != cabeza);
+    }
+    std::cout << std::endl;
+}
+
+// Ejemplo de uso
+int main() {
+    // Crear una lista circular vacía
+    Nodo* cabeza = nullptr;
+    
+    // Insertar elementos en la lista circular
+    insertar(&cabeza, 1);
+    insertar(&cabeza, 2);
+    insertar(&cabeza, 3);
+    
+    // Imprimir la lista circular
+    imprimirLista(cabeza);
+    
+    return 0;
+}
+En este ejemplo, la función insertar se encarga de crear un nuevo nodo y, dependiendo de si la lista está vacía o no, lo inserta al final de la lista circular. La función imprimirLista se utiliza para mostrar los elementos de la lista circular en orden.
+
+Espero que este ejemplo te sea útil. Si tienes alguna otra pregunta, no dudes en hacerla.
+*/
+/*
+struct Nodo {
+    int dato;
+    Nodo* siguiente;
+    Nodo* anterior;
+};
+
+// Función para insertar un elemento al final de la lista circular doblemente enlazada
+void insertar(Nodo** cabeza, int nuevoDato) {
+    // Crear un nuevo nodo
+    Nodo* nuevoNodo = new Nodo();
+    nuevoNodo->dato = nuevoDato;
+
+    // Verificar si la lista está vacía
+    if (*cabeza == nullptr) {
+        nuevoNodo->siguiente = nuevoNodo;  // El nuevo nodo apunta a sí mismo
+        nuevoNodo->anterior = nuevoNodo;   // El nuevo nodo apunta a sí mismo
+        *cabeza = nuevoNodo;  // El nuevo nodo se convierte en el cabeza
+    } else {
+        Nodo* ultimo = (*cabeza)->anterior;  // Obtener el último nodo de la lista
+
+        // Insertar el nuevo nodo al final de la lista
+        nuevoNodo->siguiente = *cabeza;      // El nuevo nodo apunta al cabeza
+        nuevoNodo->anterior = ultimo;        // El nuevo nodo apunta al último nodo
+        ultimo->siguiente = nuevoNodo;       // El último nodo apunta al nuevo nodo
+        (*cabeza)->anterior = nuevoNodo;     // El cabeza apunta al nuevo nodo
+    }
+}
+
+// Función para imprimir la lista circular doblemente enlazada en orden
+void imprimirLista(Nodo* cabeza) {
+    if (cabeza != nullptr) {
+        Nodo* temp = cabeza;
+        do {
+            std::cout << temp->dato << " ";
+            temp = temp->siguiente;
+        } while (temp != cabeza);
+    }
+    std::cout << std::endl;
+}*/
 void insertarLista(Nodo *&lista, int n) {
     Nodo *nuevo_nodo = new Nodo();
     nuevo_nodo->dato = n;
