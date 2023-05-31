@@ -1,6 +1,207 @@
 # include<iostream>
 # include<conio.h>
 # include<stdlib.h>
+# include <queue>
+using namespace std;
+// Definición de la estructura de un nodo del árbol
+struct Nodo {
+    int dato;
+    Nodo* izquierda;
+    Nodo* derecha;
+};
+
+// Función para crear un nuevo nodo del árbol
+Nodo* crearNodo(int dato) {
+    Nodo* nodo = new Nodo();
+    nodo->dato = dato;
+    nodo->izquierda = NULL;
+    nodo->derecha = NULL;
+    return nodo;
+}
+
+// Función para insertar un nuevo nodo en el árbol
+Nodo* insertarNodo(Nodo* raiz, int dato) {
+    if (raiz == NULL) {
+        return crearNodo(dato);
+    } else {
+        if (dato <= raiz->dato) {
+            raiz->izquierda = insertarNodo(raiz->izquierda, dato);
+        } else {
+            raiz->derecha = insertarNodo(raiz->derecha, dato);
+        }
+        return raiz;
+    }
+}
+
+// Función para buscar un dato en el árbol
+bool buscarDato(Nodo* raiz, int dato) {
+    if (raiz == NULL) {
+        return false;
+    } else if (raiz->dato == dato) {
+        return true;
+    } else if (dato <= raiz->dato) {
+        return buscarDato(raiz->izquierda, dato);
+    } else {
+        return buscarDato(raiz->derecha, dato);
+    }
+}
+
+// Función para mostrar el contenido del árbol en orden
+void mostrarArbol(Nodo* raiz) {
+    if (raiz != NULL) {
+        mostrarArbol(raiz->izquierda);
+        cout << raiz->dato << " ";
+        mostrarArbol(raiz->derecha);
+    }
+}
+int obtenerAltura(Nodo* raiz) {
+    if (raiz == nullptr) {
+        return 0;
+    } else {
+        int alturaIzquierda = obtenerAltura(raiz->izquierda);
+        int alturaDerecha = obtenerAltura(raiz->derecha);
+        return max(alturaIzquierda, alturaDerecha) + 1;
+    }
+}
+
+// Función auxiliar para imprimir espacios en blanco
+void imprimirEspacios(int cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+        cout << " ";
+    }
+}
+
+// Función para mostrar el árbol de manera visual en la consola
+void mostrarArbolVisual(Nodo* raiz) {
+    if (raiz == nullptr) {
+        cout << "El árbol está vacío." << endl;
+        return;
+    }
+
+    int altura = obtenerAltura(raiz);
+    int espaciosEntreNodos = 4;
+
+    queue<Nodo*> nodos;
+    nodos.push(raiz);
+
+    while (!nodos.empty()) {
+        int nodosEnNivel = nodos.size();
+        int espaciosAntes = (1 << (altura - 1)) - 1;
+        int espaciosEntre = (1 << altura) - 1;
+
+        imprimirEspacios(espaciosAntes);
+
+        for (int i = 0; i < nodosEnNivel; i++) {
+            Nodo* nodoActual = nodos.front();
+            nodos.pop();
+
+            if (nodoActual != nullptr) {
+                cout << nodoActual->dato;
+                nodos.push(nodoActual->izquierda);
+                nodos.push(nodoActual->derecha);
+            } else {
+                cout << "-";
+                nodos.push(nullptr);
+                nodos.push(nullptr);
+            }
+
+            imprimirEspacios(espaciosEntre);
+        }
+
+        altura--;
+        espaciosAntes /= 2;
+        espaciosEntre /= 2;
+
+        cout << endl;
+
+        if (nodosEnNivel == 1 && nodos.front() == nullptr) {
+            break;
+        }
+    }
+}
+int main() {
+    Nodo* raiz = nullptr;
+    int opcion;
+    int dato;
+
+    do {
+        cout << "------- Menú -------" << endl;
+        cout << "1. Insertar dato" << endl;
+        cout << "2. Buscar dato" << endl;
+        cout << "3. Mostrar árbol" << endl;
+        cout << "4. Salir" << endl;
+        cout << "Ingrese una opción: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                cout << "Ingrese el dato a insertar: ";
+                cin >> dato;
+                raiz = insertarNodo(raiz, dato);
+                cout << "Dato insertado correctamente." << endl;
+                break;
+            case 2:
+                cout << "Ingrese el dato a buscar: ";
+                cin >> dato;
+                if (buscarDato(raiz, dato)) {
+                    cout << "El dato " << dato << " está en el árbol." << endl;
+                } else {
+                    cout << "El dato " << dato << " no está en el árbol." << endl;
+                }
+                break;
+            case 3:
+                cout << "Contenido del árbol: ";
+                mostrarArbol(raiz);
+                mostrarArbolVisual(raiz);
+                cout << endl;
+                break;
+            case 4:
+                cout << "Saliendo del programa." << endl;
+            break;
+            default:
+                cout << "Opción inválida. Intente nuevamente." << endl;
+            break;
+        }
+    } while (opcion != 4);
+    return 0;
+    /*
+    Nodo* raiz = NULL;
+    // Insertar nodos en el árbol
+    raiz = insertarNodo(raiz, 50);
+    raiz = insertarNodo(raiz, 30);
+    raiz = insertarNodo(raiz, 20);
+    raiz = insertarNodo(raiz, 40);
+    raiz = insertarNodo(raiz, 70);
+    raiz = insertarNodo(raiz, 60);
+    raiz = insertarNodo(raiz, 80);
+
+    // Mostrar el árbol en orden
+    std::cout << "Contenido del árbol: ";
+    mostrarArbol(raiz);
+    std::cout << std::endl;
+
+    // Buscar un dato en el árbol
+    int datoBuscado = 40;
+    if (buscarDato(raiz, datoBuscado)) {
+        std::cout << datoBuscado << " está en el árbol." << std::endl;
+    } else {
+        std::cout << datoBuscado << " no está en el árbol." << std::endl;
+    }
+    */
+}
+/*
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int value) {
+        data = value;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+******************************************
 using namespace std;
 struct Nodo{
         int dato;
@@ -49,9 +250,10 @@ int main(int argc, char const *argv[])
     insertarLista(lista,4);
     //mostrarLista(lista);
     buscarLista(lista,6);
-    mostrarLista(lista);*/
+    mostrarLista(lista);
     return 0;
 } 
+
 /*
 void insertarLista(Nodo *&lista,int n){
     Nodo *nuevo_nodo = new Nodo();
@@ -71,7 +273,8 @@ void insertarLista(Nodo *&lista,int n){
         aux2->siguiente = nuevo_nodo;
     }
     nuevo_nodo->siguiente = aux1;
-}*/
+}
+*/
 /*
 // Función para insertar un elemento al inicio de la lista "lista DoblementeEnlasada"
 void insertarAlInicio(Node** head, int newData) {
@@ -191,6 +394,7 @@ void imprimirLista(Nodo* cabeza) {
     }
     std::cout << std::endl;
 }*/
+/*
 void insertarLista(Nodo *&lista, int n) {
     Nodo *nuevo_nodo = new Nodo();
     nuevo_nodo->dato = n;
@@ -239,7 +443,7 @@ void mostrarMenu() {
     cout << "3. Salir" << endl;
 }
 
-/*
+
 # include<iostream>
 # include<conio.h>
 # include<stdlib.h>
